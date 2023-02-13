@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SSH SERVER</title>
+  <link rel="stylesheet" href="/xterm.css" />
+  <script defer src="/xterm.js"></script>
+  <script defer src="/xterm-addon-fit.js"></script>
+  <script defer src="/socket.io/socket.io.js"></script>
+  <script defer src='/js/app.js'></script>
+  <link rel='stylesheet' href='/css/main.css'>
+</head>
+
+<body>
+  <h3>WebSSH</h3>
+  <div id="terminal-container"></div>
+  <script>
+    let term, socket;
+  // PLEASE USE A SEPERATE FILE FOR THE JS and defer it
+  // like the above app.js file 
+    window.addEventListener('load', function() {
+      const terminalContainer = document.getElementById('terminal-container');
+      term = new Terminal({
+        cursorBlink: true
+      });
+      const fitAddon = new FitAddon.FitAddon();
+      term.loadAddon(fitAddon);
+      term.open(terminalContainer);
+      fitAddon.fit();
+
+      socket = io() //.connect();
+      socket.on('connect', function() {
+        term.write('\r\n*** Connected to backend ***\r\n');
+      });
+
+      // Browser -> Backend
+      term.onKey(function(ev) {
+        console.log(ev);
+        socket.emit('data', ev.key);
+      });
+
+      // Backend -> Browser
+      socket.on('data', function(data) {
+        term.write(data);
+      });
+
+      socket.on('disconnect', function() {
+        term.write('\r\n*** Disconnected from backend ***\r\n');
+      });
+    }, false);
+  </script>
+</body>
+
+</html>

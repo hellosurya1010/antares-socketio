@@ -1,0 +1,23 @@
+{
+  "name": "remote-terminal-project1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "pm2 start index",
+	"monitor": "pm2 monit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "node-gyp": "^9.3.1",
+    "pm2": "^5.2.2",
+    "socket.io": "^4.5.4",
+    "ssh2": "^1.11.0",
+    "xterm": "^5.0.0",
+    "xterm-addon-fit": "^0.6.0"
+  }
+}
